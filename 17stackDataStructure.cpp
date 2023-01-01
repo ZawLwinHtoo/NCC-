@@ -65,9 +65,13 @@ int main(){
     push (myStack, 6);
     push (myStack, 4);
     //printf( "top is : %d\n", myStack->top);
+    int j= 0;
     for (int i= myStack->top; i>-1 ;i-- ){
+        j++;
+        printf("%d ", j);
+
         pop(myStack);
     }
-
+    printf("There are total %d data in array\n", j);
     return 0 ;
 }
