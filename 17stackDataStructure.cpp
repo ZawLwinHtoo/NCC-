@@ -4,7 +4,8 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-const int MAXOFSTACK = 10;
+#define MAXOFSTACK  10
+
 struct stack {
     int arr[MAXOFSTACK];
     int top ;
