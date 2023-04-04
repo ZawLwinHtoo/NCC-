@@ -1,0 +1,4 @@
+1 ZawLwinHtoo 12/Yangon(N)123456 admin1@gmail.com apple p y 10000 1000 0.333 old 3 0965454 30000 Yangon 10000 KBZ
+2 Admin2 9/Mandalay(N)123456 admin2@gmail.com zeon p y 10000 1000 0.333 old 3 02612654 30000 Yangon 10000 KBZ
+3 Default 11/PyinOoLwin(N)123456 admin3@gmail.com zeon p y 10000 1000 0.333 new 3 9851264 30000 Yangon 10000 KBZ
+4 bankuser 10/Insein(N)123456 bankuser@gmail.com zeon p y 10000 1000 0.333 new 3 03216845 30000 Yangon 10000 KBZ
