@@ -6,10 +6,11 @@
 
 
 int main(){
-
+    space_counter();
     loadingAllDataFromFile();
     printingAllData();
-     welcome();
+    welcome();
+
 
     return 0;
 }
