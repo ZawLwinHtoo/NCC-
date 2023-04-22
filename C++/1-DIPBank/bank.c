@@ -6,12 +6,13 @@
 
 
 int main(){
+
     space_counter();
     loadingAllDataFromFile();
-    printingAllData();
-    welcome();
-
-
+    calculate_amount_same_day(0);
+    //printingAllData();
+    // welcome();
+current_data_to_transfer(3000);
     return 0;
 }
 

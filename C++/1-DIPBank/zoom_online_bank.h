@@ -7,6 +7,7 @@
 
 #include "stdio.h"
 #include "stdlib.h"
+#include "time.h"
 #define SIZE 1000
 
 struct trans{
@@ -36,6 +37,14 @@ struct data {
 
 struct data db[SIZE];
 
+
+struct my_time{
+    char c_time[25];
+};
+
+struct my_time C_time[1];
+
+
 //Global Variable Variation
 int user = 0;
 int gvalid = -1;
@@ -46,7 +55,9 @@ int strongPass = -1;
 int phone_valid = 1;
 int name_exit = -1;
 int phone_found = -1;
-
+int trans_limit = 0;
+unsigned int current_day_to_transfer = 0;
+unsigned int current_amount_to_transfer = 0;
 //Global array Variation
 int space_array[30];
 char int_to_char_array[10];
@@ -74,6 +85,11 @@ void space_counter();
 void recording_allData_toFile();
 void transaction_record(int transfer, int receiver, unsigned int amount, char who);
 void integer_to_char(unsigned int value);
+void get_time ();
+void get_limit_amount(int user_index);
+unsigned int char_to_int_arr_fun(char charArray[]);
+void current_data_to_transfer(unsigned int amount_to_transfer);
+unsigned int calculate_amount_same_day(int to_calculate_index);
 
 void welcome(){
     int option=0;
@@ -151,8 +167,8 @@ void userSector(){
     unsigned int amount_to_transfer = 0;
     printf("This is user sector\n");
     printf("Press 1 to transfer Money:\nPress 2 to Withdraw:\nPress 3 to update your info:"
-           "\nPress 4 to Cash in:\nPress 5 to Loan:\nPress 6 to view your history:\nPress 7 to return:\n ");
-    scanf(" %d", &user_option);
+           "\nPress 4 to Cash in:\nPress 5 to Loan:\nPress 6 to view your history:\nPress 7 to return:");
+    scanf("%d", &user_option);
 
     if(user_option == 1){
         printf("This is user transfer section:\n");
@@ -174,7 +190,7 @@ void userSector(){
                 printf("You can transfer.\n");
                 break;
             } else {
-                printf("Insufficient balance\n");
+                printf("Insufficient balance. Please try again.\n");
                 amount_to_transfer = 0;
             }
         }
@@ -209,6 +225,9 @@ void userSector(){
 }
 
 
+
+
+
 void transfer_money(int transfer, int receiver,unsigned int amount){
 
     printf("Loading to transfer........\n");
@@ -234,6 +253,7 @@ void transaction_record(int transfer, int receiver, unsigned int amount, char wh
     char to[4] = {'-','t','o','-'};
     int index_point = 0;
     if (who == 't'){
+        index_point= 0;
         for (int i=0; i<5; i++){
             db[transfer].trc[space_array[transfer]-15].note[i] = from[i];
             index_point++;
@@ -256,20 +276,27 @@ void transaction_record(int transfer, int receiver, unsigned int amount, char wh
 
         db[transfer].trc[space_array[transfer]-15].note[index_point] = '-';
         index_point++;
+
         db[transfer].trc[space_array[transfer]-15].note[index_point] = '$';
         index_point++;
+
         for (int m=0 ; m<amount_counter; m++){
             db[transfer].trc[space_array[transfer]-15].note[index_point] = int_to_char_array[m];
             index_point++;
         }
 
-        space_array[transfer]+=1;
+        get_time();
+        for (int aaa=0; aaa<25; aaa++){
+            db[transfer].trc[space_array[transfer]-15].note[index_point] = C_time[0].c_time[aaa];
+            index_point++;
+        }
+        space_array[transfer]++ ;
 
     } else if (who == 'r'){
-            char record[15] = {'-','R','e','c','e','i','v','e','d',' ','f','r','o','m','-'};
+            char record[14] = {'R','e','c','e','i','v','e','d','-','f','r','o','m','-'};
             index_point = 0;
 
-            for (int i=0; i<15; i++){
+            for (int i=0; i<14; i++){
 
                 db[receiver].trc[space_array[receiver]-15].note[i] = record[i];
                 index_point ++;
@@ -287,6 +314,12 @@ void transaction_record(int transfer, int receiver, unsigned int amount, char wh
 
             for (int k=0; k<amount_counter; k++){
                 db[receiver].trc[space_array[receiver]-15].note[index_point] = int_to_char_array[k];
+                index_point++;
+            }
+
+            get_time();
+            for (int iii=0; iii<25; iii++){
+                db[receiver].trc[space_array[receiver]-15].note[index_point] = C_time[0].c_time[iii];
                 index_point++;
             }
             space_array[receiver]++;
@@ -401,7 +434,7 @@ void registration(){
 
     printf("This is NCC bank User Registration.\n");
     printf("Enter your email");
-    scanf( " %[^\n]",&reEmail);
+    scanf( " %[^\n]",&reEmail[0]);
     gvalid= -1;
     myGmailValidation(reEmail);
     if (gvalid != -1){
@@ -416,7 +449,7 @@ void registration(){
 
             while (nrc_valid == -1){
                 printf("Enter your NRC:");
-                scanf(" %[^\n]", &re_NRC);
+                scanf(" %[^\n]", &re_NRC[0]);
                 nrc_Validation(re_NRC);
                 if (nrc_valid == -1 ){
                     printf("Your nrc format was not valid.\n");
@@ -427,7 +460,7 @@ void registration(){
             strongPass=-1;
             while (strongPass == -1){
                 printf("Enter your password:");
-                scanf( " %[^\n]", &re_pass);
+                scanf( " %[^\n]", &re_pass[0]);
                 myStrongPassword(re_pass);
                 if (strongPass == -1){
                     printf("Your Password Format too weak and Try Again!\n");
@@ -449,7 +482,7 @@ void registration(){
              printf("Enter your amount");
              scanf (" %u", &db[user].cur_amount);
              printf("Enter your address:");
-             scanf (" %[^\n]", &db[user].add);
+             scanf (" %[^\n]", &db[user].add[0]);
              printf("Enter your note:");
              scanf (" %[^\n]",  &db[user].trc[0].note[0]);
 
@@ -753,6 +786,176 @@ void integer_to_char(unsigned int value) {
 
 }
 
+unsigned int char_to_int_arr_fun(char charArray[]){
+    unsigned int data = 0;
+
+    FILE *fptr = fopen("int_to_char.txt", "w");
+    if (fptr == NULL){
+        printf("File opening error");
+    } else {
+        fprintf(fptr, "%s",charArray);
+    }
+    fclose(fptr);
+
+    FILE *fptr2 = fopen("int_to_char.txt", "r");
+    if (fptr2 ==NULL){
+        printf("File opening error:");
+    } else {
+        fscanf(fptr2,"%u",&data);
+    }
+
+    fclose(fptr2);
+
+    return data;
+}
+
+void get_time (){
+    time_t tm;
+    time(&tm);
+    printf("Current time is:%s\n", ctime(&tm));
+    FILE *fptr = fopen("mytime.txt", "w");
+    fprintf(fptr, "%s", ctime(&tm));
+
+    fclose(fptr);
+
+    int index = 0;
+    int time_space_counter = 0;
+    C_time[0].c_time[index] = '-';
+    index++;
+
+    FILE *fptr2 = fopen("mytime.txt", "r");
+
+    char c = fgetc(fptr2);
+
+    while (!feof(fptr2)){
+
+        if( c == ' '){
+            time_space_counter++;
+            if (time_space_counter == 1){
+                C_time[0].c_time[index] = '!';
+                c = fgetc(fptr2);
+                index++;
+            } else if (time_space_counter == 4){
+                C_time[0].c_time[index] = '@';
+                c = fgetc(fptr2);
+                index++;
+            } else {
+                C_time[0].c_time[index] = '-';
+                c = fgetc(fptr2);
+                index++;
+            }
+
+        } else{
+            C_time[0].c_time[index] = c;
+            c = fgetc(fptr2);
+            index++;
+        }
+    }
+    fclose(fptr2);
 
 
+}
+
+
+void get_limit_amount(int user_index){
+
+    // 1 for personal 2 for business
+
+    int acc_level = db[user_index].acc_lvl;
+    char pOrb = db[user_index].pOrb[0];
+    int p_or_b = 0;
+
+    if (pOrb == 'p'){
+        p_or_b = 1;
+    } else if (pOrb == 'b'){
+        p_or_b = 2;
+    }
+
+    switch (acc_level) {
+        case 1:
+            if (p_or_b == 1) {
+                trans_limit = 100000;
+            } else {
+                trans_limit = 1000000;
+            }
+            break;
+
+        case 2:
+            if ( p_or_b == 2){
+                trans_limit = 50000;
+            } else {
+                trans_limit = 500000;
+            }
+            break;
+
+        case 3:
+            if ( p_or_b == 3){
+                trans_limit = 10000;
+            } else {
+                trans_limit = 100000;
+            }
+            break;
+
+        default:
+            break;
+    }
+}
+
+void current_data_to_transfer(unsigned int amount_to_transfer){
+    char get_current_day[2];
+    get_time();
+    printf("Current info is:%s,current amount is: %u\n",C_time[0].c_time, amount_to_transfer);
+    get_current_day[0] = C_time[0].c_time[9];
+    get_current_day[1] =  C_time[0].c_time[10];
+    unsigned int day_to_transfer = char_to_int_arr_fun(get_current_day);
+    //printf("%u", day_to_transfer);
+    current_day_to_transfer = day_to_transfer;
+    current_amount_to_transfer = amount_to_transfer;
+    //printf("%d  %d", current_day_to_transfer, current_amount_to_transfer);
+}
+
+
+//to calculate all amount of same day
+unsigned int calculate_amount_same_day(int to_calculate_index) {
+
+    int record_counter = space_array[to_calculate_index] - 15;
+    int index_counter = 0;
+
+    for (int i = record_counter - 1; i >= 0; i--) {
+        int current_record_counter = charCounting(db[to_calculate_index].trc[i].note);
+        index_counter = 0;
+        for (int ii = 0; ii < current_record_counter; ii++) {
+
+            if (db[to_calculate_index].trc[i].note[ii] == '$') {
+                break;
+            }
+            index_counter++;
+        }
+        int quantity_of_amount = 0;
+
+        for (int iii = index_counter; iii < current_record_counter; iii++) {
+
+            if (db[to_calculate_index].trc[i].note[iii] == '-') {
+                break;
+            }
+
+            quantity_of_amount++;
+        }
+        index_counter++;
+
+        char amount_char_array[10];
+
+        for (int a = 0; a < 10; a++) {
+            amount_char_array[a] = '\0';
+        }
+
+        for (int aa = 0; aa < quantity_of_amount - 1; aa++) {
+            amount_char_array[aa] = db[to_calculate_index].trc[i].note[index_counter];
+            index_counter++;
+        }
+        unsigned int current_record_amount = char_to_int_arr_fun(amount_char_array);
+        printf("%d\n",current_record_amount);
+        printf("br\n");
+    }
+}
 #endif //C___ZOOM_ONLINE_BANK_H
