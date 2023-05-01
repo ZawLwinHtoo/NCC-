@@ -90,6 +90,7 @@ void get_limit_amount(int user_index);
 unsigned int char_to_int_arr_fun(char charArray[]);
 void current_data_to_transfer(unsigned int amount_to_transfer);
 unsigned int calculate_amount_same_day(int to_calculate_index);
+int check_user_input(char input[2]);
 
 void welcome(){
     int option=0;
@@ -108,8 +109,15 @@ void welcome(){
         welcome();
     }
 }
+// ascii value 0 =48 9=57
+int check_user_input(char input[2]){
 
-
+    if (input[0]>= 48 && input[0]<=57 && input[1]=='\0'){
+        return input[0]
+    } else {
+        return -1;
+    }
+}
 
 void log_In() {
     char l_name[50];
@@ -214,6 +222,7 @@ void userSector(){
 
         transfer_money(emailExist, phone_found, amount_to_transfer);
         recording_allData_toFile();
+        printf("\n");
         userSector();
 
 
@@ -230,15 +239,33 @@ void userSector(){
 
 void transfer_money(int transfer, int receiver,unsigned int amount){
 
-    printf("Loading to transfer........\n");
-    db[transfer].cur_amount = db[transfer].cur_amount - amount;
-    db[receiver].cur_amount = db[receiver].cur_amount + amount;
+    get_limit_amount(transfer);
+    current_data_to_transfer(amount);
+    unsigned int total_amount = calculate_amount_same_day(transfer);
+    printf("\nUser Name:%s , total transfered amount for today:%u\n",db[transfer].name, total_amount);
 
-    transaction_record(transfer,receiver,amount,'t');
-    transaction_record(transfer,receiver,amount,'r');
+    total_amount = total_amount + amount;
+    printf("\n****** THE TOTAL AMOUNT IS: %u *****\n"
+           "You cant transfer anymore for today; Plz upgrade your account for further more.\n",total_amount);
 
-    printf("Transaction succeed!!\n");
+    if (total_amount>=trans_limit){
+        printf("Exceed limit amount!\n");
+        printf("\n");
+        userSector();
+
+    }else {
+        printf("Loading to transfer........\n");
+        db[transfer].cur_amount = db[transfer].cur_amount - amount;
+        db[receiver].cur_amount = db[receiver].cur_amount + amount;
+
+        transaction_record(transfer,receiver,amount,'t');
+        transaction_record(transfer,receiver,amount,'r');
+
+        printf("Transaction succeed!!\n");
+    }
+
 }
+
 
 
 void transaction_record(int transfer, int receiver, unsigned int amount, char who){
@@ -881,7 +908,7 @@ void get_limit_amount(int user_index){
             break;
 
         case 2:
-            if ( p_or_b == 2){
+            if ( p_or_b == 1){
                 trans_limit = 50000;
             } else {
                 trans_limit = 500000;
@@ -889,7 +916,7 @@ void get_limit_amount(int user_index){
             break;
 
         case 3:
-            if ( p_or_b == 3){
+            if ( p_or_b == 1){
                 trans_limit = 10000;
             } else {
                 trans_limit = 100000;
@@ -904,7 +931,7 @@ void get_limit_amount(int user_index){
 void current_data_to_transfer(unsigned int amount_to_transfer){
     char get_current_day[2];
     get_time();
-    printf("Current info is:%s,current amount is: %u\n",C_time[0].c_time, amount_to_transfer);
+    printf("Current info is:%s,Current amount that you want to transfer is: %u\n",C_time[0].c_time, amount_to_transfer);
     get_current_day[0] = C_time[0].c_time[9];
     get_current_day[1] =  C_time[0].c_time[10];
     unsigned int day_to_transfer = char_to_int_arr_fun(get_current_day);
@@ -918,8 +945,10 @@ void current_data_to_transfer(unsigned int amount_to_transfer){
 //to calculate all amount of same day
 unsigned int calculate_amount_same_day(int to_calculate_index) {
 
+    unsigned int total_amount_for_same_day = 0;
     int record_counter = space_array[to_calculate_index] - 15;
     int index_counter = 0;
+    char day_char_array[3];
 
     for (int i = record_counter - 1; i >= 0; i--) {
         int current_record_counter = charCounting(db[to_calculate_index].trc[i].note);
@@ -954,8 +983,32 @@ unsigned int calculate_amount_same_day(int to_calculate_index) {
             index_counter++;
         }
         unsigned int current_record_amount = char_to_int_arr_fun(amount_char_array);
-        printf("%d\n",current_record_amount);
-        printf("br\n");
+        //printf("Current record amount: %d and ",current_record_amount);
+//        total_amount_for_same_day = total_amount_for_same_day+ current_record_amount;
+
+        for (int x = index_counter; x < current_record_counter; x++) {
+            if (db[to_calculate_index].trc[i].note[index_counter] == '!') {
+                break;
+            }
+            index_counter++;
+        }
+        day_char_array[0] = db[to_calculate_index].trc[i].note[index_counter + 5];
+        day_char_array[1] = db[to_calculate_index].trc[i].note[index_counter + 6];
+        unsigned int current_record_day = char_to_int_arr_fun(day_char_array);
+        //printf("Current record day is: %u\n", current_record_day);
+        if (current_record_day != current_day_to_transfer) {
+            //printf("adf;\n");
+            break;
+        } else {
+            printf("Current record amount: %d and ", current_record_amount);
+            total_amount_for_same_day = total_amount_for_same_day + current_record_amount;
+            printf("Current record day is: %u\n", current_record_day);
+        }
+
     }
+
+    printf("Total amount for same day:%u\n",total_amount_for_same_day);
+
+    return total_amount_for_same_day;
 }
 #endif //C___ZOOM_ONLINE_BANK_H
