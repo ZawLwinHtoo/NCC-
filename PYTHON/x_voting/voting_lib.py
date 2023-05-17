@@ -165,7 +165,7 @@ class Voting:
                 fptr.write(total_data)
 
     def loading_candidate_from_file(self):
-        with open("file2.txt", 'r') as fptr:
+        with open("file.txt", 'r') as fptr:
             data = fptr.readlines()
             for i in data:
                 id = len(self.candidate)
