@@ -1,10 +1,9 @@
 //
-// Created by HUAWEI on 3/28/2023.
+// Created by zl_shit_h on 15/05/23.
 //
 
 #ifndef C___ZOOM_ONLINE_BANK_H
 #define C___ZOOM_ONLINE_BANK_H
-
 #include "stdio.h"
 #include "stdlib.h"
 #include "time.h"
@@ -113,8 +112,8 @@ void welcome(){
 int check_user_input(char input[2]){
 
     if (input[0]>= 48 && input[0]<=57 && input[1]=='\0'){
-        return input[0]
-    } else {
+        return input[0];
+    }else {
         return -1;
     }
 }
@@ -163,10 +162,10 @@ void log_In() {
     }
 
 
-        printf("Log IN succeed.");
-        printf("Welcome Sir, %s\n", db[emailExist].name);
-        printf("Your current amount is: %u\n",db[emailExist].cur_amount);
-        userSector();
+    printf("Log IN succeed.");
+    printf("Welcome Sir, %s\n", db[emailExist].name);
+    printf("Your current amount is: %u\n",db[emailExist].cur_amount);
+    userSector();
 }
 
 void userSector(){
@@ -320,39 +319,39 @@ void transaction_record(int transfer, int receiver, unsigned int amount, char wh
         space_array[transfer]++ ;
 
     } else if (who == 'r'){
-            char record[14] = {'R','e','c','e','i','v','e','d','-','f','r','o','m','-'};
-            index_point = 0;
+        char record[14] = {'R','e','c','e','i','v','e','d','-','f','r','o','m','-'};
+        index_point = 0;
 
-            for (int i=0; i<14; i++){
+        for (int i=0; i<14; i++){
 
-                db[receiver].trc[space_array[receiver]-15].note[i] = record[i];
-                index_point ++;
-            }
+            db[receiver].trc[space_array[receiver]-15].note[i] = record[i];
+            index_point ++;
+        }
 
-            for (int j =0; j<trans_name_counter; j++){
-                db[receiver].trc[space_array[receiver]-15].note[index_point] = db[transfer].name[j];
-                index_point++;
-            }
-            db[receiver].trc[space_array[receiver]-15].note[index_point] = '-';
+        for (int j =0; j<trans_name_counter; j++){
+            db[receiver].trc[space_array[receiver]-15].note[index_point] = db[transfer].name[j];
             index_point++;
-            db[receiver].trc[space_array[receiver]-15].note[index_point] = '$';
+        }
+        db[receiver].trc[space_array[receiver]-15].note[index_point] = '-';
+        index_point++;
+        db[receiver].trc[space_array[receiver]-15].note[index_point] = '$';
+        index_point++;
+
+
+        for (int k=0; k<amount_counter; k++){
+            db[receiver].trc[space_array[receiver]-15].note[index_point] = int_to_char_array[k];
             index_point++;
+        }
 
-
-            for (int k=0; k<amount_counter; k++){
-                db[receiver].trc[space_array[receiver]-15].note[index_point] = int_to_char_array[k];
-                index_point++;
-            }
-
-            get_time();
-            for (int iii=0; iii<25; iii++){
-                db[receiver].trc[space_array[receiver]-15].note[index_point] = C_time[0].c_time[iii];
-                index_point++;
-            }
-            space_array[receiver]++;
+        get_time();
+        for (int iii=0; iii<25; iii++){
+            db[receiver].trc[space_array[receiver]-15].note[index_point] = C_time[0].c_time[iii];
+            index_point++;
+        }
+        space_array[receiver]++;
     }
 }
-    //id Name NRC  email password pOrb loan_status monthly_income
+//id Name NRC  email password pOrb loan_status monthly_income
 //loan_amount loan_rate accountStatus account_level phNumber dob amount address trans_limit_per_day TransRC
 void loadingAllDataFromFile() {
     FILE *fptr ;
@@ -506,12 +505,12 @@ void registration(){
             }
             db[user].phNumber = re_phone;
             printf("Ph number registration succeed!\n");
-             printf("Enter your amount");
-             scanf (" %u", &db[user].cur_amount);
-             printf("Enter your address:");
-             scanf (" %[^\n]", &db[user].add[0]);
-             printf("Enter your note:");
-             scanf (" %[^\n]",  &db[user].trc[0].note[0]);
+            printf("Enter your amount");
+            scanf (" %u", &db[user].cur_amount);
+            printf("Enter your address:");
+            scanf (" %[^\n]", &db[user].add[0]);
+            printf("Enter your note:");
+            scanf (" %[^\n]",  &db[user].trc[0].note[0]);
 
             myStringCopy( db[user].email, reEmail);
             myStringCopy(db[user].name, reName);
@@ -689,7 +688,7 @@ void comp_two_char_arr(char first[50], char sec[50]){
             if (first[i] != sec[i]){
                 break;
             }
-                same_counter++;
+            same_counter++;
 
         }
 
@@ -1012,3 +1011,4 @@ unsigned int calculate_amount_same_day(int to_calculate_index) {
     return total_amount_for_same_day;
 }
 #endif //C___ZOOM_ONLINE_BANK_H
+

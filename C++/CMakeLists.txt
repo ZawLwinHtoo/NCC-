@@ -3,4 +3,4 @@ project(C__)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(C++ 1-DIPBank/bank.c 1-DIPBank/zoom_online_bank.h)
+add_executable(__main.cpp  AVL_tree.c)
