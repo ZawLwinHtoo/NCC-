@@ -49,17 +49,11 @@ cmake_ninja_workdir = /home/zl_shit_h/Documents/Programs/C++/cmake-build-debug/
 
 build cmake_object_order_depends_target___main.cpp: phony || CMakeFiles/__main.cpp.dir
 
-build CMakeFiles/__main.cpp.dir/AVL_tree.c.o: C_COMPILER____main.2ecpp_Debug /home/zl_shit_h/Documents/Programs/C++/AVL_tree.c || cmake_object_order_depends_target___main.cpp
-  DEP_FILE = CMakeFiles/__main.cpp.dir/AVL_tree.c.o.d
+build CMakeFiles/__main.cpp.dir/1-DIPBank_/bank.c.o: C_COMPILER____main.2ecpp_Debug /home/zl_shit_h/Documents/Programs/C++/1-DIPBank$ /bank.c || cmake_object_order_depends_target___main.cpp
+  DEP_FILE = CMakeFiles/__main.cpp.dir/1-DIPBank_/bank.c.o.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/__main.cpp.dir
-  OBJECT_FILE_DIR = CMakeFiles/__main.cpp.dir
-
-build CMakeFiles/__main.cpp.dir/testavl.c.o: C_COMPILER____main.2ecpp_Debug /home/zl_shit_h/Documents/Programs/C++/testavl.c || cmake_object_order_depends_target___main.cpp
-  DEP_FILE = CMakeFiles/__main.cpp.dir/testavl.c.o.d
-  FLAGS = -g -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles/__main.cpp.dir
-  OBJECT_FILE_DIR = CMakeFiles/__main.cpp.dir
+  OBJECT_FILE_DIR = CMakeFiles/__main.cpp.dir/1-DIPBank_
 
 
 # =============================================================================
@@ -69,7 +63,7 @@ build CMakeFiles/__main.cpp.dir/testavl.c.o: C_COMPILER____main.2ecpp_Debug /hom
 #############################################
 # Link the executable __main.cpp
 
-build __main.cpp: C_EXECUTABLE_LINKER____main.2ecpp_Debug CMakeFiles/__main.cpp.dir/AVL_tree.c.o CMakeFiles/__main.cpp.dir/testavl.c.o
+build __main.cpp: C_EXECUTABLE_LINKER____main.2ecpp_Debug CMakeFiles/__main.cpp.dir/1-DIPBank_/bank.c.o
   FLAGS = -g
   OBJECT_DIR = CMakeFiles/__main.cpp.dir
   POST_BUILD = :

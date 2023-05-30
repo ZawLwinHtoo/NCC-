@@ -101,9 +101,9 @@ int main()
             default:
                 printf("\n\tInvalid Choice\n");
         }
-
-        printf("\n\nDo you want to continue? ");
-        scanf(" %c", &user_continue);
+//
+//        printf("\n\nDo you want to continue? ");
+//        scanf(" %c", &user_continue);
     }
 
     return 0;

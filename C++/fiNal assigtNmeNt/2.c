@@ -1,6 +1,8 @@
-//
-// Created by zl_shit_h on 19/05/23.
-//
+// Recording data from AVL tree to file
+// and load back
+
+
+
 #include "stdio.h"
 #include "stdlib.h"
 #include "stdbool.h"
@@ -13,6 +15,10 @@ struct node {
 
 struct node* root = NULL;
 
+
+//global variable declaration
+char  int_to_char_array[10];
+
 //fun declaration
 struct node* create_node(int data);
 struct node* rotate_left(struct node* root);
@@ -20,11 +26,15 @@ struct node* rotate_right (struct node* root);
 int height(struct node* root);
 int balance_factor(struct node* root);
 struct node* insert (struct node* root, int data);
-
+void recursion_in_tree(FILE* fptr, struct node* root);
+void record_to_file(struct node* root);
+void integer_to_char(unsigned int value);
+struct node* read_from_file();
 
 
 int main(){
     int option;
+    root = read_from_file();
     while (true){
         printf("_______AVL TREE________\n");
         printf("1. Insert\n2. Delete\n3. Search\n4. Inorder\n5. Preorder\n6. Postorder\n7. Exit\n");
@@ -34,10 +44,10 @@ int main(){
             printf("Enter data: ");
             scanf("%d",&data);
             root = insert(root, data);
-
+            record_to_file(root);
         }
     }
-
+    record_to_file(root);
 
     return 0;
 }
@@ -89,7 +99,7 @@ int height(struct node* root){
 
     if (root == NULL){
         return 0;
-    }
+     }
 
     if (root->left == NULL){
         lh = 0;
@@ -131,7 +141,6 @@ int balance_factor(struct node* root){
     return lh - rh ;
 }
 
-
 struct node* insert (struct node* root, int data){
     if (root == NULL){
         struct node* new_node = create_node(data);
@@ -154,7 +163,8 @@ struct node* insert (struct node* root, int data){
                 root = rotate_left(root);
 
             }
-        }
+        }//
+
 
     } else{
         root->left = insert(root->left, data);
@@ -173,5 +183,66 @@ struct node* insert (struct node* root, int data){
 
     root->height = height(root);
     return root;
+
+}
+
+
+void recursion_in_tree(FILE* fptr, struct node* root){
+    if (root != NULL){
+        recursion_in_tree(fptr, root->left);
+        //integer_to_char(root->data);
+
+        fprintf(fptr, "%d%c",root->data,'\n');
+        recursion_in_tree(fptr, root->right);
+    }
+
+}
+
+void record_to_file(struct node* root){
+    FILE *fptr = fopen("1.txt", "w");
+    recursion_in_tree(fptr, root);
+    fclose(fptr);
+
+}
+
+struct node* read_from_file(){
+    int i;
+    struct node* Root;
+    FILE* fptr = fopen("1.txt", "r");
+    if (fptr == NULL){
+        printf("Error at file opening");
+    }else{
+        while (!feof(fptr)){
+            if(feof(fptr)){
+                break;
+            }
+            fscanf(fptr,"%d",&i);
+            Root = insert(Root,i);
+
+        }
+    }
+
+    return Root;
+}
+
+void integer_to_char(unsigned int value) {
+
+    FILE *fptr = fopen("1.1.txt", "w");
+    if (fptr == NULL){
+        printf("File opening error");
+    } else {
+        fprintf(fptr, "%d", value);
+    }
+
+    fclose(fptr);
+
+    FILE *fptr2 = fopen ("1.1.txt", "r");
+    if (fptr2 == NULL){
+        printf("File opening error");
+    } else {
+        fscanf(fptr2, "%s", &int_to_char_array[0]);
+    }
+
+    fclose(fptr2);
 
 }
