@@ -3,4 +3,4 @@ project(C__)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(__main.cpp  "1-DIPBank /bank.c")
+add_executable(__main.cpp "fiNal assigtNmeNt/baNkPj.c" "fiNal assigtNmeNt/AVL_for_bank.h")
