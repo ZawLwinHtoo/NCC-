@@ -1,4 +1,4 @@
-1 ZawLwinHtoo 12/Yangon(N)123456 admin1@gmail.com apple p y 10000 1000 0.333000 old 3 965454 15000 Yangon 10000 KBZ From-ZawLwinHtoo-to-Default-$5000-Tue!May-02-18:52:22@2023
+1 ZawLwinHtoo 12/Yangon(N)123456 admin1@gmail.com apple p y 10000 1000 0.333000 old 3 965454 15000 Yangon 10000 KBZ
 2 Admin2 9/Mandalay(N)123456 admin2@gmail.com zeon p y 10000 1000 0.333000 old 3 2612654 20000 Yangon 10000 KBZ
-3 Default 11/PyinOoLwin(N)123456 admin3@gmail.com zeon p y 10000 1000 0.333000 new 3 9999 75453 Yangon 10000 KBZ Received-from-ZawLwinHtoo-$5000-Tue!May-02-18:52:22@2023
+3 Default 11/PyinOoLwin(N)123456 admin3@gmail.com zeon p y 10000 1000 0.333000 new 3 9999 75453 Yangon 10000 KBZ
 4 bankuser 10/Insein(N)123456 bankuser@gmail.com zeon p y 10000 1000 0.333000 new 3 3216845 50000 Yangon 10000 KBZ

@@ -3,12 +3,15 @@
 //
 
 #include "stdio.h"
-#include "baNkAssigNmeNt.h"
 #include "AVL_for_bank.h"
 
 
+
 int main(){
-    registration();
-//    welcome();
+    loading_data_from_file_to_AVL();
+    while (true){
+        welcome();
+
+    }
     return 0;
 }

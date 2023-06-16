@@ -5,9 +5,7 @@
 #ifndef C___AVL_FOR_BANK_H
 #define C___AVL_FOR_BANK_H
 
-#include "baNkAssigNmeNt.h"
-#include "../1-DIPBank /zoom_online_bank.h"
-
+#include "bankproject.h"
 
 struct node {
     struct data db;
@@ -16,11 +14,15 @@ struct node {
     int height;
 };
 
-struct node* root = NULL;
+//Function Declaration
 
 struct node* create_node(struct data DB);
 int height (struct node* root);
 int balance_factor(struct node* root);
+struct node* rotate_right(struct node* root);
+struct node* rotate_left (struct node* root);
+struct node* insertion(struct data db, struct node* root);
+
 
 struct node* create_node(struct data DB){
     int i = 0;
@@ -29,20 +31,20 @@ struct node* create_node(struct data DB){
         printf("Memory cannot be allocated!");
     } else {
         new_node->db.id = DB.id;
-        new_node->db.monthly_income = DB.monthly_income;
-        new_node->db.loan_amount = DB.loan_amount;
-        new_node->db.acc_lvl = DB.acc_lvl;
-        new_node->db.phNumber = DB.phNumber;
-        new_node->db.cur_amount = DB.cur_amount;
-        new_node->db.trans_amt_limit_per_day = DB.trans_amt_limit_per_day;
-        while ( DB.email[i] != '\0' && DB.name[i] != '\0' && DB.pw[i] != '\0' && DB.NRC[i] != '\0'){
-
-            new_node->db.email[i] = DB.email[i];
-            new_node->db.name[i] = DB.name[i];
-            new_node->db.pw[i] = DB.pw[i];
-            new_node->db.NRC[i] = DB.NRC[i];
-            i++;
-        }
+//        new_node->db.monthly_income = DB.monthly_income;
+//        new_node->db.loan_amount = DB.loan_amount;
+//        new_node->db.acc_lvl = DB.acc_lvl;
+//        new_node->db.phNumber = DB.phNumber;
+//        new_node->db.cur_amount = DB.cur_amount;
+//        new_node->db.trans_limit_per_day = DB.trans_limit_per_day;
+//        while ( DB.email[i] != '\0' || DB.name[i] != '\0' || DB.password[i] != '\0' || DB.NRC[i] != '\0'){
+//
+//            new_node->db.email[i] = DB.email[i];
+//            new_node->db.name[i] = DB.name[i];
+//            new_node->db.password[i] = DB.password[i];
+//            new_node->db.NRC[i] = DB.NRC[i];
+//            i++;
+//        }
 
         i = 0;
         while (DB.pOrb[i] != '\0'){
@@ -112,18 +114,19 @@ int height (struct node* root){
     if (root == NULL){
         return 0;
 
-    } else if(root->left == NULL){
-        return 0;
+    }
+    if (root->left == NULL){
+         lh = 0;
 
     } else {
-        lh = 1 + root->height;
+        lh = 1 + root->left->height;
 
     }
 
     if (root->right == NULL) {
-        return 0;
+        rh = 0;
     } else {
-        rh = 1 + root->height;
+        rh = 1 + root->right->height;
 
     }
 
@@ -135,6 +138,52 @@ int height (struct node* root){
 }
 
 
+struct node* insertion(struct data db, struct node* root){
+
+    if (root == NULL){
+        struct node* new_node = create_node(db);
+
+        if(new_node == NULL){
+            return NULL;
+        }
+        root = new_node;
+
+    } else if(db.id > root->db.id){
+
+        root->right = insertion(db, root->right);
+
+        if (balance_factor(root) == -2){
+            if (db.id > root->right->db.id){
+                root = rotate_left(root);
+            } else {
+                root->right = rotate_right(root->right);
+                root = rotate_left(root);
+            }
+        }
+    } else {
+        root->left = insertion(db, root->left);
+
+        if (balance_factor(root) == 2){
+            if (db.id < root->left->db.id){
+                root = rotate_right(root);
+
+            } else {
+                root->left = rotate_right(root->left);
+                root = rotate_left(root);
+            }
+        }
+    }
+    root->height = height(root);
+    return root;
+}
+
+
+
+//struct node* insert(struct node* root){
+//
+//
+//
+//}
 
 
 #endif //C___AVL_FOR_BANK_H

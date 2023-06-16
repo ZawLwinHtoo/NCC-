@@ -356,7 +356,7 @@ void transaction_record(int transfer, int receiver, unsigned int amount, char wh
 void loadingAllDataFromFile() {
     FILE *fptr ;
     fptr = fopen("ncc_db.txt" ,"r");
-    if (fptr== NULL){
+    if (fptr == NULL){
         printf("Error while loading data from file");
     } else {
         for (int i=0;  i<SIZE; i++){
