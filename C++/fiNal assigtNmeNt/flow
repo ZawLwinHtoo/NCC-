@@ -1,2 +1,13 @@
 17 ZawLwinHtoo admin1@gmail.com apple 12/INS(N)123456 p 10000 1000 old 3 0966666 50000 Insein 10000 TRC
 11 ZawLwinHtoo admin1@gmail.com apple 12/INS(N)123456 p 10000 1000 old 3 0966666 50000 Insein 10000 TRC
+
+
+
+&db->id, &db->name[0], &db->email[0], &db->password[0], &db->NRC[0], &db->pOrb[0], &db->monthly_income,
+                   &db->loan_amount, &db->acc_status[0], &db->acc_lvl, &db->phNumber, &db->cur_amount, &db->add[0], &db->trans_limit_per_day,
+                   &db->trc[0].note[0]);
+
+
+                   &db.id, &db.name[0], &db.email[0], &db.password[0], &db.NRC[0], &db.pOrb[0], &db.monthly_income,
+                                      &db.loan_amount, &db.acc_status[0], &db.acc_lvl, &db.phNumber, &db.cur_amount, &db.add[0], &db.trans_limit_per_day,
+                                      &db.trc[0].note[0]);

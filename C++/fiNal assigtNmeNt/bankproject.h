@@ -12,6 +12,15 @@
 
 
 //structures declaration
+struct node {
+    struct data* db;
+    struct node* left;
+    struct node* right;
+    int height;
+};
+
+
+
 struct trans{
     char note[200];
 };
@@ -23,7 +32,7 @@ struct data{
     char NRC[50];
     char pOrb[10];
     unsigned int monthly_income;
-     unsigned int loan_amount;
+    unsigned int loan_amount;
     char acc_status[10];
     int acc_lvl;
     unsigned long long int phNumber;
@@ -34,12 +43,16 @@ struct data{
 
 };
 
-struct data db;
+struct data* db;
 struct node* root = NULL;
 
-
 //function declaration
-struct node* insertion(struct data db, struct node* root);
+struct node* insertion(struct data* db, struct node* root);
+void Inorder_Traversal (struct node* root);
+void open(struct node* root);
+
+
+
 
 void welcome();
 int char_counting(char to_count[50]);
@@ -48,8 +61,9 @@ int strong_password(char to_check[50]);
 int compare_two_char_arr(char first[50], char sec[50]);
 void my_string_copy(char org[50], char to_get_copied[50]);
 void registration();
-struct data loading_data_from_file_to_AVL();
-
+void loading_data_from_file_to_AVL();
+void printing_data(struct node* root);
+void recording_all_data_to_file_from_AVL(struct node* root);
 //global variable declaration
 int g_valid = -1;
 
@@ -72,6 +86,10 @@ void welcome(){
 
 
 void registration() {
+
+    db = NULL;
+    db = (struct data*) malloc(sizeof (struct data));
+
     unsigned int id;
     char r_email[50];
     char r_name[50];
@@ -86,55 +104,63 @@ void registration() {
     printf("\nThis is REGISTRATION SECTION!\n");
     printf("Enter id :");
     scanf("%u",&id);
-//    printf("Enter your e-mail: ");
-//    scanf(" %[^\n]",&r_email[0]);
-//    g_valid =-1;
-//    g_valid = gmail_validation(r_email);
-//    while (g_valid == -1){
-//
-//        printf("E-mail format is not valid. Plz try again!\n");
-//        registration();
-//
-//    }
-//
-//    printf("Email registration succeed.\n");
-//    printf("Enter your name: ");
-//    scanf(" %[^\n]", &r_name[0]);
-//    pass_checker = -1;
-//    while (pass_checker == -1){
-//        printf("Sir: %s, Please enter your password : ",r_name);
-//        scanf(" %[^\n]",r_pw);
-//        pass_checker = strong_password(r_pw);
-//        if (pass_checker == -1){
-//            printf("Password was too weak!!");
-//        }
-//    }
-//
-//    printf("Pass\n");
-//
-//    printf("Enter your NRC:");
-//    scanf(" %[^\n]", &r_nrc[0]);
-//    printf("Your NRC: %s\n", r_nrc);
-//    printf("Enter your phone number:");
-//    scanf(" %llu",&ph_no);
-//    printf("%llu\n", ph_no);
-//    printf("Enter your current amount:");
-//    scanf("%u",&cur_amount);
-//    printf("%u\n", cur_amount);
-//    printf("Enter your address:");
-//    scanf(" %[^\n]", &add[0]);
-//    printf("%s\n",add);
-//    my_string_copy(r_email, db.email);
-//    my_string_copy(r_name, db.name);
-//    my_string_copy(r_pw, db.password);
-//    my_string_copy(r_nrc, db.NRC);
-//    my_string_copy(add, db.add);
-//    db.phNumber = ph_no;
-//    db.cur_amount = cur_amount;
+    printf("Enter your e-mail: ");
+    scanf(" %[^\n]",&r_email[0]);
+    g_valid =-1;
+    g_valid = gmail_validation(r_email);
+    while (g_valid == -1){
 
-    db.id = id;
+        printf("E-mail format is not valid. Plz try again!\n");
+        registration();
+
+    }
+
+    printf("Email registration succeed.\n");
+    printf("Enter your name: ");
+    scanf(" %[^\n]", &r_name[0]);
+    pass_checker = -1;
+    while (pass_checker == -1){
+        printf("Sir: %s, Please enter your password : ",r_name);
+        scanf(" %[^\n]",r_pw);
+        pass_checker = strong_password(r_pw);
+        if (pass_checker == -1){
+            printf("Password was too weak!!");
+        }
+    }
+
+    printf("Pass\n");
+
+    printf("Enter your NRC:");
+    scanf(" %[^\n]", &r_nrc[0]);
+    printf("Your NRC: %s\n", r_nrc);
+    printf("Enter your phone number:");
+    scanf(" %llu",&ph_no);
+    printf("%llu\n", ph_no);
+    printf("Enter your current amount:");
+    scanf("%u",&cur_amount);
+    printf("%u\n", cur_amount);
+    printf("Enter your address:");
+    scanf(" %[^\n]", &add[0]);
+    printf("%s\n",add);
+    my_string_copy(r_email, db->email);
+    my_string_copy(r_name, db->name);
+    my_string_copy(r_pw, db->password);
+    my_string_copy(r_nrc, db->NRC);
+    my_string_copy(add, db->add);
+    my_string_copy(root->db->pOrb, db->pOrb);
+    my_string_copy(root->db->acc_status, db->acc_status);
+    my_string_copy(root->db->trc->note, db->trc->note);
+    db->acc_lvl = root->db->acc_lvl;
+    db->trans_limit_per_day = root->db->trans_limit_per_day;
+    db->loan_amount = root->db->loan_amount;
+    db->monthly_income = root->db->monthly_income;
+    db->phNumber = ph_no;
+    db->cur_amount = cur_amount;
+    db->id = id;
 
     root = insertion(db, root);
+    recording_all_data_to_file_from_AVL(root);
+
 
 }
 
@@ -277,7 +303,7 @@ void my_string_copy(char org[50], char to_get_copied[50]){
     }
 }
 
-struct data loading_data_from_file_to_AVL(){
+void loading_data_from_file_to_AVL(){
 
     FILE *fptr = fopen("data_base","r");
     if (fptr ==NULL){
@@ -286,23 +312,46 @@ struct data loading_data_from_file_to_AVL(){
 
         //Scanning data from file until end of file
         while (!feof(fptr)){
-//            fscanf(fptr, "%u%s%s%s%s%s%u%u%s%d%llu%u%s%u%s",&db.id, &db.name[0], &db.email[0], &db.password, &db.NRC, &db.pOrb, &db.monthly_income,
-//                   &db.loan_amount, &db.acc_status, &db.acc_lvl, &db.phNumber, &db.cur_amount, &db.add, &db.trans_limit_per_day,
-//                   &db.trc[0].note);
+            fscanf(fptr, "%u%s%s%s%s%s%u%u%s%d%llu%u%s%u%s",&db->id, &db->name[0], &db->email[0], &db->password[0], &db->NRC[0], &db->pOrb[0], &db->monthly_income,
+                   &db->loan_amount, &db->acc_status[0], &db->acc_lvl, &db->phNumber, &db->cur_amount, &db->add[0], &db->trans_limit_per_day,
+                   &db->trc[0].note[0]);
 
 
-            fscanf(fptr, "%u",&db.id);
+
 
             //Inserting db structure to AVL Tree
             root = insertion(db, root);
         }
 
-//        fscanf(fptr, "%s", &db.name[0]);
+
 
     }
 
     fclose(fptr);
 
-    return db;
+//    return db;
 }
+
+
+void recording_all_data_to_file_from_AVL(struct node* root){
+    open(root);
+
+}
+
+
+void printing_data(struct node* root){
+
+    Inorder_Traversal(root);
+}
+
+
+void space_counter(){
+
+
+    
+
+}
+
+
+
 #endif //C___BANKPROJECT_H

@@ -8,9 +8,12 @@
 
 
 int main(){
+    db = (struct data*) malloc(sizeof (struct data));
+
     loading_data_from_file_to_AVL();
     while (true){
-        welcome();
+        printing_data(root);
+         welcome();
 
     }
     return 0;
