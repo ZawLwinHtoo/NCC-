@@ -1,4 +1,9 @@
+//
+// Created by zl_shit_h on 03/08/23.
+//
 
+#ifndef C___SCH_PROJECT_MAIN_FOR_SNAKE_H
+#define C___SCH_PROJECT_MAIN_FOR_SNAKE_H
 #include "Snake.h"
 #define WIDTH 50
 #define HEIGHT 25
@@ -19,31 +24,13 @@ void board();
 void runner();
 void print_snake();
 void make_food();
-
+int Main_Snake();
 //STRUCTURE
 
 //Object & Class
 Snake snake({WIDTH/2, HEIGHT/2},1);
 Food food;
 
-int main(){
-    initscr();
-    cbreak(); //Turn off line buffering
-    noecho(); //Turn off character echoing
-    curs_set(0); //Hide the cursor
-    nodelay(stdscr, true);
-//    timeout(500);
-
-
-    runner();
-
-
-    endwin();
-
-    return 0;
-
-
-}
 
 
 void board(){
@@ -86,9 +73,9 @@ void runner(){
 //        pos_x++;
 
 //        if(kbhit()) {
-            char ch = getch();
-                snake.change_dir(ch);
-                snake.move_snake();
+        char ch = getch();
+        snake.change_dir(ch);
+        snake.move_snake();
 
 
 
@@ -148,4 +135,22 @@ void print_snake() {
 
     }
 }
+int Main_Snake(){
+    initscr();
+    cbreak(); //Turn off line buffering
+    noecho(); //Turn off character echoing
+    curs_set(0); //Hide the cursor
+    nodelay(stdscr, true);
+//    timeout(500);
 
+
+    runner();
+
+
+    endwin();
+
+    return 0;
+
+}
+
+#endif //C___SCH_PROJECT_MAIN_FOR_SNAKE_H
