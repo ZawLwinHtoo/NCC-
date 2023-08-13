@@ -12,7 +12,7 @@
 #define SIZE 50
 #include "SNAKE/main_for_snake.h"
 #include "CONNECT_4/main_for_connect_4.h"
-
+#include "Tic_Tac_Toe/main_for_tic_tac_toe.h"
 using namespace std;
 
 
@@ -133,7 +133,7 @@ void user_sector(){
         if (option ==1){
 
         } else if (option ==2){
-
+            Main_Tic_Tac_Toe();
         } else if (option == 3){
 
         } else if (option == 4){
