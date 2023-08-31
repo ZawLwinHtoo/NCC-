@@ -49,11 +49,11 @@ cmake_ninja_workdir = /home/zl_shit_h/Documents/Programs/UIT/C++_sch_Project/cma
 
 build cmake_object_order_depends_target_C___sch_Project: phony || CMakeFiles/C___sch_Project.dir
 
-build CMakeFiles/C___sch_Project.dir/main.cpp.o: CXX_COMPILER__C___sch_Project_Debug /home/zl_shit_h/Documents/Programs/UIT/C++_sch_Project/main.cpp || cmake_object_order_depends_target_C___sch_Project
-  DEP_FILE = CMakeFiles/C___sch_Project.dir/main.cpp.o.d
+build CMakeFiles/C___sch_Project.dir/Main/main.cpp.o: CXX_COMPILER__C___sch_Project_Debug /home/zl_shit_h/Documents/Programs/UIT/C++_sch_Project/Main/main.cpp || cmake_object_order_depends_target_C___sch_Project
+  DEP_FILE = CMakeFiles/C___sch_Project.dir/Main/main.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles/C___sch_Project.dir
-  OBJECT_FILE_DIR = CMakeFiles/C___sch_Project.dir
+  OBJECT_FILE_DIR = CMakeFiles/C___sch_Project.dir/Main
 
 
 # =============================================================================
@@ -63,7 +63,7 @@ build CMakeFiles/C___sch_Project.dir/main.cpp.o: CXX_COMPILER__C___sch_Project_D
 #############################################
 # Link the executable C___sch_Project
 
-build C___sch_Project: CXX_EXECUTABLE_LINKER__C___sch_Project_Debug CMakeFiles/C___sch_Project.dir/main.cpp.o | /usr/lib/x86_64-linux-gnu/libcurses.so /usr/lib/x86_64-linux-gnu/libform.so
+build C___sch_Project: CXX_EXECUTABLE_LINKER__C___sch_Project_Debug CMakeFiles/C___sch_Project.dir/Main/main.cpp.o | /usr/lib/x86_64-linux-gnu/libcurses.so /usr/lib/x86_64-linux-gnu/libform.so
   FLAGS = -g
   LINK_LIBRARIES = /usr/lib/x86_64-linux-gnu/libcurses.so  /usr/lib/x86_64-linux-gnu/libform.so
   OBJECT_DIR = CMakeFiles/C___sch_Project.dir

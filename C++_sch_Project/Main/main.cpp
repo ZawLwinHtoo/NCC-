@@ -15,6 +15,7 @@ int main(){
 //    } else if(choice==2){
 //        Main_Connect_4();
 //    }
+    load_data_from_file();
     welcome();
 
     return 0;

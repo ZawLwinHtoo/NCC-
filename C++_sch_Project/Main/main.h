@@ -9,8 +9,10 @@
 #include <iostream>
 #include "string"
 #include "cstring"
+#include "fstream"
+#include "sstream"
 #define SIZE 50
-#include "SNAKE/main_for_snake.h"
+//#include "SNAKE/main_for_snake.h"
 #include "CONNECT_4/main_for_connect_4.h"
 #include "Tic_Tac_Toe/main_for_tic_tac_toe.h"
 using namespace std;
@@ -32,6 +34,11 @@ int gmail_validation(string to_Valid);
 int strong_pass_check(string pass);
 void log_in();
 void user_sector();
+void record_data_to_file();
+void load_data_from_file();
+//Global Variables
+int user = 0;
+
 
 void welcome(){
     int option;
@@ -75,9 +82,11 @@ void registration(){
         strong_pass = strong_pass_check(r_pw);
         if (strong_pass != -1){
             cout<<"Registration Succeed!";
-            db[0].name = r_name;
-            db[0].password = r_pw;
-            db[0].email = r_email;
+            db[user].name = r_name;
+            db[user].password = r_pw;
+            db[user].email = r_email;
+            user++;
+            record_data_to_file();
             welcome();
         } else {
             cout<<"Password is too weak!!! Try again:\n";
@@ -137,7 +146,7 @@ void user_sector(){
         } else if (option == 3){
 
         } else if (option == 4){
-            Main_Snake();
+//            Main_Snake();
         } else if (option == 5){
             Main_Connect_4();
         } else {
@@ -188,12 +197,12 @@ int strong_pass_check(string pass){
     int smallChar = 0;
     int capChar = 0;
     int numChar = 0;
+    if (pass.length() < 8){
+        return -1;
+    }
 
     while (true){
 
-        if (pass.length() < 8){
-            return -1;
-        }
         if ( i == pass.length()){
             break;
         }
@@ -214,13 +223,38 @@ int strong_pass_check(string pass){
 
         i++;
 
-        if (specialChar >0 && numChar >0 && capChar > 0 && smallChar > 0){
-            return 1;
-        }
+
     }
-    return 0;
+    if (specialChar >0 && numChar >0 && capChar > 0 && smallChar > 0){
+        return 1;
+    } else{
+        return -1;
+    }
 
 }
 
+void record_data_to_file(){
+
+    ofstream file("db.txt");
+    for (int i=0; i<user; i++){
+        file << db[i].name << " " << db[i].email <<" " << db[i].password << endl;
+    }
+
+
+}
+
+void load_data_from_file(){
+
+    ifstream file("db.txt");
+    int i=0;
+    while (!file.eof()){
+        file >> db[i].name >> db[i].email >> db[i].password ;
+//        cout<<db[i].name<<" "<< db[i].email<<" "<< db[i].password<<endl;
+        i++;
+        user++;
+    }
+    user-=1;
+
+}
 
 #endif //C___SCH_PROJECT_MAIN_H
