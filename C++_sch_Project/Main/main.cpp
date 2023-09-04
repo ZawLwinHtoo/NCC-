@@ -16,7 +16,8 @@ int main(){
 //        Main_Connect_4();
 //    }
     load_data_from_file();
-    welcome();
+//    print_all_data();
+//    welcome();
 
     return 0;
 }

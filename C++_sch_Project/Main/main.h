@@ -19,6 +19,7 @@ using namespace std;
 
 
 struct data{
+    int id;
     string name;
     string email;
     string password;
@@ -36,6 +37,7 @@ void log_in();
 void user_sector();
 void record_data_to_file();
 void load_data_from_file();
+void print_all_data();
 //Global Variables
 int user = 0;
 
@@ -82,6 +84,7 @@ void registration(){
         strong_pass = strong_pass_check(r_pw);
         if (strong_pass != -1){
             cout<<"Registration Succeed!";
+            db[user].id = user+=1;
             db[user].name = r_name;
             db[user].password = r_pw;
             db[user].email = r_email;
@@ -237,24 +240,42 @@ void record_data_to_file(){
 
     ofstream file("db.txt");
     for (int i=0; i<user; i++){
-        file << db[i].name << " " << db[i].email <<" " << db[i].password << endl;
+        file << db[i].id << " " << db[i].name << " " << db[i].email <<" " << db[i].password << endl;
     }
 
-
+    file.close();
 }
 
 void load_data_from_file(){
-
+    string temp;
+    string name, email, password;
+    int id;
     ifstream file("db.txt");
-    int i=0;
     while (!file.eof()){
-        file >> db[i].name >> db[i].email >> db[i].password ;
-//        cout<<db[i].name<<" "<< db[i].email<<" "<< db[i].password<<endl;
-        i++;
+        getline(file,temp);
+        for (int i=int((temp.length()-1)); i>0; i-- ){
+            int pos = 0;
+            if (temp[i] == ' '){
+                pos = i;
+
+            }
+        }
+        file >>db[user].id >> db[user].name >> db[user].email >> db[user].password ;
+//      cout<<db[i].name<<" "<< db[i].email<<" "<< db[i].password<<endl;
         user++;
     }
+
     user-=1;
+
+    file.close();
 
 }
 
+
+void print_all_data() {
+
+    for (int i = 0; i < user; i++) {
+        cout << db[i].id << " " << db[i].name << " " << db[i].email << " " << db[i].password << endl;
+    }
+}
 #endif //C___SCH_PROJECT_MAIN_H
