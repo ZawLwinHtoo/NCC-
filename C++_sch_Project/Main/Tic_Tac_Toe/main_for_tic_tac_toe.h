@@ -11,6 +11,7 @@
 #include <cstdlib>
 using namespace std;
 
+int mark_tic_tac_toe = 0;
 void drawBoard(char *space);
 void playerMove(char *space, char player);
 void comMove(char *space, char com);
@@ -64,21 +65,21 @@ void comMove(char *space, char com){
 
 bool checkmate(char *space, char player, char oppo){
     if ((space[0] != ' ')&&(space[0]==space[1] && space[1]==space[2])){
-        space[0] == player ? cout << "You Win! \n" : cout << "You Lose! \n";}
+        space[0] == player ? ( mark_tic_tac_toe =1,cout << "You Win! \n") : cout << "You Lose! \n";}
     else if ((space[3] != ' ')&&(space[3]==space[4] && space[4]==space[5])){
-        space[3] == player ? cout << "You Win! \n" : cout << "You Lose! \n";}
+        space[3] == player ? ( mark_tic_tac_toe =1,cout << "You Win! \n")  : cout << "You Lose! \n";}
     else if ((space[6] != ' ')&&(space[6]==space[7] && space[7]==space[8])){
-        space[6] == player ? cout << "You Win! \n" : cout << "You Lose! \n";}
+        space[6] == player ? ( mark_tic_tac_toe =1,cout << "You Win! \n")  : cout << "You Lose! \n";}
     else if ((space[0] != ' ')&&(space[0]==space[3] && space[3]==space[6])){
-        space[0] == player ? cout << "You Win! \n" : cout << "You Lose! \n";}
+        space[0] == player ? ( mark_tic_tac_toe =1,cout << "You Win! \n")  : cout << "You Lose! \n";}
     else if ((space[1] != ' ')&&(space[1]==space[4] && space[4]==space[7])){
-        space[1] == player ? cout << "You Win! \n" : cout << "You Lose! \n";}
+        space[1] == player ? ( mark_tic_tac_toe =1,cout << "You Win! \n")  : cout << "You Lose! \n";}
     else if ((space[2] != ' ')&&(space[2]==space[5] && space[5]==space[8])){
-        space[2] == player ? cout << "You Win! \n" : cout << "You Lose! \n";}
+        space[2] == player ? ( mark_tic_tac_toe =1,cout << "You Win! \n")  : cout << "You Lose! \n";}
     else if ((space[0] != ' ')&&(space[0]==space[4] && space[4]==space[8])){
-        space[0] == player ? cout << "You Win! \n" : cout << "You Lose! \n";}
+        space[0] == player ? ( mark_tic_tac_toe =1,cout << "You Win! \n")  : cout << "You Lose! \n";}
     else if ((space[2] != ' ')&&(space[2]==space[4] && space[4]==space[6])){
-        space[1] == player ? cout << "You Win! \n" : cout << "You Lose! \n";}
+        space[1] == player ? ( mark_tic_tac_toe =1,cout << "You Win! \n")  : cout << "You Lose! \n";}
     else {
         return false;
     }
@@ -168,6 +169,7 @@ int Main_Tic_Tac_Toe(){
         cout << "\nChoose a mode! " << endl;
         cout << "1.Play with a  Friend"<<endl;
         cout << "2.Play with Computer" << endl;
+        cout << "3.To quit Tic-Tac-Toe!" << endl;
         cin >> modeChoice;
 
 
@@ -239,8 +241,11 @@ int Main_Tic_Tac_Toe(){
                 }
             };// mode 2 while end
         }// mode 2 else if
+        else if( modeChoice == 3){
 
-        else {
+            return 0;
+
+        } else {
             cout << "\nInvalid Choice!" << endl;
         }
     }while ( modeChoice >= 1 || modeChoice <= 2) ;

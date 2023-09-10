@@ -16,6 +16,8 @@ struct playerInfo
     char playerID{};
 };
 
+int mark_connect_4 = 0;
+
 int PlayerDrop( char board[][10], playerInfo activePlayer );
 void CheckBellow ( char board[][10], playerInfo activePlayer, int dropChoice );
 void DisplayBoard ( char board[][10] );
@@ -176,6 +178,7 @@ int FullBoard( char board[][10] )
 void PlayerWin ( playerInfo activePlayer )
 {
     cout << endl << activePlayer.playerName << " Connected Four, " << activePlayer.playerName << " Win!" << endl;
+
 }
 
 int restart ( char board[][10] )
@@ -251,6 +254,7 @@ int Main_Connect_4(){
         cout << "Enter a mood " << endl;
         cout << "1.Play with Computer" << endl;
         cout << "2.Play with a Friend" << endl;
+        cout << "3.To quit Connect-4" << endl;
         cin >> choice;
         if(choice == 1){
             playerInfo playerOne, com;
@@ -277,6 +281,7 @@ int Main_Connect_4(){
                 if ( win == 1 )
                 {
                     PlayerWin(playerOne);
+                    mark_connect_4 += 1;
                     again = restart(board);
                     if (again == 2)
                     {
@@ -292,8 +297,10 @@ int Main_Connect_4(){
                 {
                     PlayerWin(com);
                     again = restart(board);
+
                     if (again == 2)
                     {
+
                         break;
                     }
                 }
@@ -365,7 +372,11 @@ int Main_Connect_4(){
                 }
 
             }while ( again != 2 );
-        }// choice 2 end here
+        }else if ( choice == 3 ){
+            return 0;
+        } else {
+            cout<<"Invalid Option!!\n"<<endl;
+        }
 
 
 

@@ -14,6 +14,7 @@ using namespace std;
 //GLOBAL VARIABLE
 //int pos_x = 1;
 //int pos_y = 1;
+int Snake_Speed = 100000;
 bool flag_for_food= true;
 COORD snake_pos;
 COORD food_pos;
@@ -83,13 +84,14 @@ void runner(){
         flag_for_food = false;
         if(snake.eaten(food.current_food_pos())){
             flag_for_food = true;
+            Snake_Speed-=1000;
             make_food();
             snake.snake_grow();
         }
 
 
         refresh();
-        usleep(100000);
+        usleep(Snake_Speed);
     }
 
 

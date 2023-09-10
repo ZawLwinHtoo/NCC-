@@ -5,16 +5,18 @@
 #ifndef C___SCH_PROJECT_MAIN_H
 #define C___SCH_PROJECT_MAIN_H
 
-
+#define SIZE 50
 #include <iostream>
 #include "string"
 #include "cstring"
 #include "fstream"
 #include "sstream"
-#define SIZE 50
+#include "vector"
 //#include "SNAKE/main_for_snake.h"
 #include "CONNECT_4/main_for_connect_4.h"
 #include "Tic_Tac_Toe/main_for_tic_tac_toe.h"
+//#include "TETRIS/main_for_tetris.h"
+#include "HANG_MAN/main_for_hangman.h"
 using namespace std;
 
 
@@ -23,7 +25,7 @@ struct data{
     string name;
     string email;
     string password;
-    int score_point;
+    int score_point = 0;
 };
 
 struct data db[SIZE];
@@ -40,7 +42,7 @@ void load_data_from_file();
 void print_all_data();
 //Global Variables
 int user = 0;
-
+int user_index;
 
 void welcome(){
     int option;
@@ -71,20 +73,25 @@ void registration(){
 
     cout<<"Enter your email :";
 //    cin.getline(r_email,50);
-    getline(cin,r_email);
+//    cin>>r_email;
+//    cin.ignore();
+    getline(cin>>ws,r_email);
+
     email_exit = gmail_validation(r_email);
     if (email_exit != -1){
         cout<<"Email registration succeed.\n";
         cout<<"Enter your user_name :";
-        getline(cin,r_name);
+//        cin.ignore();
+        getline(cin>>ws,r_name);
 //            cin>>r_name;
-        cout<<"Enter your password :";
-        getline(cin,r_pw);
+        cout<<"Enter your password : (Password must contain at least 8 letter, one capital, one small, one special character and one number!!)";
+//        cin.ignore();
+        getline(cin>>ws,r_pw);
 //            cin>>r_pw;
         strong_pass = strong_pass_check(r_pw);
         if (strong_pass != -1){
             cout<<"Registration Succeed!";
-            db[user].id = user+=1;
+            db[user].id = user+1;
             db[user].name = r_name;
             db[user].password = r_pw;
             db[user].email = r_email;
@@ -96,7 +103,7 @@ void registration(){
             registration();
         }
     } else {
-        cout<<"Email format invalid. Try again\n";
+        cout<<"Email format invalid. Try again!!!\n";
         registration();
     }
 
@@ -104,27 +111,42 @@ void registration(){
 }
 
 void log_in(){
+    user_index = 0;
     string l_name;
+    string l_email;
     string l_pw;
 
     cout<<"This is login sector."<<endl;
     cout<<"Enter your user name :";
-    cin>>l_name;
+    cin.ignore();
+    getline(cin,l_name);
+    cout<<"Enter your email:";
+//    cin.ignore();
+    getline(cin,l_email);
     cout<<"Enter your password :";
-    cin>>l_pw;
-    cout<<"\nLog in succeed!";
-    cout<<"Welcome "<<l_name<<" !!!\n";
-    user_sector();
+//    cin.ignore();
+    getline(cin,l_pw);
+    for (int i=0; i<user; i++){
+        if ( l_name == db[i].name && l_email == db[i].email && l_pw == db[i].password){
+            user_index = i;
+            cout<<"\nLog in succeed!";
+            cout<<"Welcome "<<l_name<<" !!!\n";
+            user_sector();
+        }
+    }
+    cout<<"Log in failed!!!! Please try again!!\n\n\n"<<endl;
+    welcome();
+//    user_sector();
 }
 
 void user_sector(){
     int option;
 
-    cout << "***************" << endl;
-    cout << "***************" << endl;
-    cout << "*****ARCADE GAME*******" << endl;
-    cout << "***************" << endl;
-    cout << "***************" << endl <<endl;
+    cout << "**********************" << endl;
+    cout << "**********************" << endl;
+    cout << "*****ARCADE GAME******" << endl;
+    cout << "**********************" << endl;
+    cout << "**********************" << endl <<endl;
 
     cout << "***************" << endl;
     cout << "Welcome Gamers!" << endl;
@@ -142,20 +164,32 @@ void user_sector(){
 
         cout << "Choose a game(1-5): ";
         cin>>option;
-        if (option ==1){
-
+        if (option ==1 ){
+            Main_hang_man();
+            db[user_index].score_point += mark_hang_man;
+            record_data_to_file();
+            user_sector();
         } else if (option ==2){
             Main_Tic_Tac_Toe();
+            db[user_index].score_point += mark_tic_tac_toe;
+            record_data_to_file();
+            user_sector();
         } else if (option == 3){
-
+//            Main_tetris();
+            user_sector();
         } else if (option == 4){
 //            Main_Snake();
+            user_sector();
         } else if (option == 5){
             Main_Connect_4();
+            db[user_index].score_point+=mark_connect_4;
+            record_data_to_file();
+            user_sector();
         } else {
             cout<<"\n\n*******Invalid option!*******!!"<<endl;
             cout<<"**********Please choose within the given options*******\n"<<endl;
         }
+
         cout << endl << endl;
 
     } while (true);
@@ -237,37 +271,59 @@ int strong_pass_check(string pass){
 }
 
 void record_data_to_file(){
+    string file_Path = "/home/zl_shit_h/Documents/Programs/UIT/C++_sch_Project/Main/DB.txt";
 
-    ofstream file("db.txt");
+    ofstream file(file_Path);
     for (int i=0; i<user; i++){
-        file << db[i].id << " " << db[i].name << " " << db[i].email <<" " << db[i].password << endl;
+        file << db[i].id << " " << db[i].name << " " << db[i].email <<" " << db[i].password << " " << db[i].score_point << endl;
     }
 
     file.close();
 }
 
 void load_data_from_file(){
+    string file_Path = "/home/zl_shit_h/Documents/Programs/UIT/C++_sch_Project/Main/DB.txt";
     string temp;
-    string name, email, password;
+    string  name, email, password;
     int id;
-    ifstream file("db.txt");
-    while (!file.eof()){
-        getline(file,temp);
-        for (int i=int((temp.length()-1)); i>0; i-- ){
-            int pos = 0;
-            if (temp[i] == ' '){
-                pos = i;
+    ifstream file(file_Path);
+    if (file.is_open()){
+        while (!file.eof()){
+            getline(file,temp);
+            if (temp.empty()){
+                break;
+            }
+            istringstream iss(temp);
+            vector <string> array_for_pass_and_email;
+            for (string s;iss>>s;){
+                array_for_pass_and_email.push_back(s);
+            }
+            for (int i=1; i<array_for_pass_and_email.size()-3;i++){
+                if ( i!= array_for_pass_and_email.size()-4){
+                    db[user].name+=array_for_pass_and_email[i] + " ";
+                } else{
+                    db[user].name += array_for_pass_and_email[i];
+                }
+
 
             }
+
+            db[user].id = stoi(array_for_pass_and_email[0]);
+            db[user].email = array_for_pass_and_email[array_for_pass_and_email.size()-3];
+            db[user].password = array_for_pass_and_email[array_for_pass_and_email.size()-2];
+            db[user].score_point = stoi(array_for_pass_and_email[array_for_pass_and_email.size()-1]);
+//        file >>db[user].id >> db[user].name >> db[user].email >> db[user].password ;
+//      cout<<db[user].name<< "\n" << db[user].email<<"\n"<< db[user].password<<endl;
+            user++;
         }
-        file >>db[user].id >> db[user].name >> db[user].email >> db[user].password ;
-//      cout<<db[i].name<<" "<< db[i].email<<" "<< db[i].password<<endl;
-        user++;
-    }
 
-    user-=1;
+        user;
 
-    file.close();
+        file.close();
+    } else{
+        cout<<"Error Opening File!!";
+    };
+
 
 }
 
@@ -275,7 +331,7 @@ void load_data_from_file(){
 void print_all_data() {
 
     for (int i = 0; i < user; i++) {
-        cout << db[i].id << " " << db[i].name << " " << db[i].email << " " << db[i].password << endl;
+        cout << db[i].id << " " << db[i].name<< " " << db[i].email << " " << db[i].password << " " << db[i].score_point << endl;
     }
 }
 #endif //C___SCH_PROJECT_MAIN_H

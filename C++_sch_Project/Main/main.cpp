@@ -7,17 +7,9 @@ using namespace std;
 
 
 int main(){
-//    int choice;
-//    cout<<"ENTER NUMBER:";
-//    cin>>choice;
-//    if (choice==1){
-//        Main_Snake();
-//    } else if(choice==2){
-//        Main_Connect_4();
-//    }
     load_data_from_file();
-//    print_all_data();
-//    welcome();
-
+    print_all_data();
+    cout<<"Current User :"<<user<<endl;
+    welcome();
     return 0;
 }

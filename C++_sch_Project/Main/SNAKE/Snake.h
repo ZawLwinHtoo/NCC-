@@ -8,9 +8,11 @@
 
 
 #include <iostream>
+//#include "conio.h"
+//#include <windows.h>
 #include "ncurses.h"
 #include "unistd.h"
-#include "kbhit.h"
+//#include "kbhit.h"
 #include "food.h"
 #include "ctime"
 #include "cstdlib"
@@ -117,16 +119,17 @@ void Snake::snake_grow() {
 }
 
 bool Snake::collide() {
-    for (int count = 1; count<body.size()-1; count++){
-        if (pos.x == body[count-1].x && pos.y == body[count-1].y){
+    for (int count = 1; count < body.size() - 1; count++) {
+        if (pos.x == body[count - 1].x && pos.y == body[count - 1].y) {
             return false;
         }
     }
-    if (pos.x == 0 || pos.x== WIDTH-1 || pos.y == 0 || pos.y == HEIGHT-1){
+    if (pos.x == 0 || pos.x == WIDTH - 1 || pos.y == 0 || pos.y == HEIGHT - 1) {
         return false;
-    } else{
+    } else {
         return true;
     }
+
 
 }
 
